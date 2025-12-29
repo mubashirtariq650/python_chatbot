@@ -27,7 +27,7 @@ def chat():
 
     try:
         response = client.chat.completions.create(
-            model="deepseek/deepseek-chat",
+            model="deepseek/deepseek-v3.2",
             messages=messages,
             max_tokens=300,
             temperature=0.7
