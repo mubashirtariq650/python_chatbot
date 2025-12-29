@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background"></div>
+
+    <div class="chat-container">
+        <header>
+            🤖 AI Chatbot With Bashar
+            <button id="delete-btn">Delete All</button>
+        </header>
+        <div id="chat" class="chat-box"></div>
+        <div class="input-area">
+            <input id="input" type="text" placeholder="Type your message..." />
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const username = "Bashar"; // Tumhara name yahan show hoga
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
