@@ -9,8 +9,9 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = "supersecretkey"  # session ke liye
 
+# Configure DeepSeek via OpenRouter API
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
+    api_key=os.getenv("DEEPSEEK_API_KEY"),
     base_url="https://openrouter.ai/api/v1"
 )
 
@@ -26,7 +27,7 @@ def chat():
 
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="deepseek/deepseek-chat",
             messages=messages,
             max_tokens=300,
             temperature=0.7
@@ -35,6 +36,16 @@ def chat():
         return jsonify({"reply": bot_reply})
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        error_msg = str(e)
+        if "401" in error_msg or "invalid" in error_msg.lower():
+            error_msg = "API key is invalid. Please check your DEEPSEEK_API_KEY in the .env file."
+        elif "429" in error_msg:
+            error_msg = "Too many requests. Please try again later."
+        elif "insufficient_quota" in error_msg.lower():
+            error_msg = "OpenRouter quota exceeded. Please check your account at https://openrouter.ai/"
+        else:
+            error_msg = "Server error. Please try again later."
+        return jsonify({"error": error_msg}), 500
+
 if __name__ == "__main__":
     app.run(debug=True)
